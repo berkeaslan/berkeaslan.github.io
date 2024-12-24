@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>DSA: Arrays - Part 1 | Berke Aslan</title>
+<meta name="keywords" content="">
+<meta name="description" content="Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don&rsquo;t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the bubble, selection, and insertion sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.">
+<meta name="author" content="Berke Aslan">
+<link rel="canonical" href="https://berkeaslan.github.io/posts/dsa-arrays-part-1/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://berkeaslan.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://berkeaslan.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://berkeaslan.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://berkeaslan.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://berkeaslan.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://berkeaslan.github.io/posts/dsa-arrays-part-1/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    }
+  };
+</script>
+<meta property="og:url" content="https://berkeaslan.github.io/posts/dsa-arrays-part-1/">
+  <meta property="og:site_name" content="Berke Aslan">
+  <meta property="og:title" content="DSA: Arrays - Part 1">
+  <meta property="og:description" content="Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don’t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the bubble, selection, and insertion sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-24T14:08:26+01:00">
+    <meta property="article:modified_time" content="2024-12-24T14:08:26+01:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DSA: Arrays - Part 1">
+<meta name="twitter:description" content="Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don&rsquo;t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the bubble, selection, and insertion sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://berkeaslan.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "DSA: Arrays - Part 1",
+      "item": "https://berkeaslan.github.io/posts/dsa-arrays-part-1/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DSA: Arrays - Part 1",
+  "name": "DSA: Arrays - Part 1",
+  "description": "Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don\u0026rsquo;t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the bubble, selection, and insertion sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don’t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the bubble, selection, and insertion sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.\nWhat are arrays? Arrays are collections of elements that allow access and manipulation through their indices.\nBubble sort Bubble sort is perhaps the algorithm that feels most natural to many of us when sorting objects in real life. The Bubble sort algorithm works by sorting an array from the lowest to the highest values. Let’s imagine the following (I reckon, unimaginable) scenario:\nYou have a bookshelf with n books stored in random order. Each book has a unique thickness (the value), but they are randomly arranged on the shelf. Now, you’ve decided to sort the books from thinnest to thickest. How do you do this?\nIf you have a bookshelf nearby, you can apply the algorithm yourself in real life. Otherwise, I’ll provide the pseudocode (not the abstract version you often see) along with some illustrations:\nStart: Begin on the left of the bookshelf, at the position with index 0. Swap: Compare the book at index 0 with the book to its right (index 1). If the book at index 0 is thicker than the one at index 1, swap them so that the thicker book moves to index 1 and the thinner book stays at index 0. Next, compare the book at index 1 with the book at index 2 and perform the same check. Continue this process until you reach the last book at index n – 1. By the end of this pass, the thickest book will have “bubbled up” to the last position on the shelf. You have now completed one pass through the bookshelf. Optimize: For each subsequent pass, you can skip the last book, as it is already the thickest book from the previous pass. Repeat: Continue repeating the passes until all the books are sorted. This method ensures that with each pass, the next thickest book settles into its correct position, gradually sorting the entire collection from thinnest to thickest.\nIf you want to see the more abstract pseudocode, I invite you to read the pseuodocode that you can find on Wikipedia or some other website on the internet.\nLet’s implement this algorithm in C (with some minor performance adjustments). We start by including the right C headers:\n#include #include Next, we need a problem so that we can sort it. We define the following main in the script:\n// Function to print an array void printArray(int array[], int size) { for (int i = 0; i \u003c size; ++i) { printf(\"%d \", array[i]); } printf(\"\\n\"); } int main() { // Initialize the random array int randomArray[] = {27, 85, 13, 42, 68, 9, 54, 31, 76, 50}; int size = sizeof(randomArray) / sizeof(randomArray[0]); printf(\"Unsorted Array:\\n\"); printArray(randomArray, size); // Calling the sort function (once we have implemented it), // uncomment to run: // bubbleSort(randomArray, size); // selectionSort(randomArray, size); // insertionSort(randomArray, size); printf(\"Sorted Array in Ascending Order:\\n\"); printArray(randomArray, size); return 0; } Finally, we can implement the algorithm itself in C (with some illustrative comments in the book analogy):\nvoid bubbleSort(int arr[], int n) { // We iterate through each book in the shelf // starting at index 0 and moving to index (n - 2) // using the outer for loop. Why (n - 2)? Since we // only need to look at the first (n - 1) indeces, and we start // counting at 0 to i \u003c= n - 2 (or equivalently: i \u003c n - 1), // will iterate through the first (n - 1) elements. for (int i = 0; i \u003c n - 1; ++i) { // We include an indicator. Why do we do this? Simple: // once no swap occurs anymore (in the next for loop), // we can be sure that the \"lower\"-part of the array is // also sorted, so we don't need to pass over these parts // again. bool swapped = false; // Set to false at the beginning of each iter. // We use this for-loop to iterate and compare the books in the shelf // with excluding the last one at each pass, hence: // j \u003c (n - 1) - i. for (int j = 0; j \u003c (n - 1) - i; ++j) // If element at index j is higher than the index at // element j + 1, we swap them. if (arr[j] \u003e arr[j + 1]) { // Standard swap in C (using temp var.): int temp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = temp; // If swapped, we set the indicator to true. swapped = true; } // If no swap has occured, we can break out of the for loop: if (!swapped) break; } } This is a simple explanation of the Bubble Sort algorithm. Regarding computational time complexity, the inner for loop runs \\(n\\) times to perform \\(n\\) comparisons. Additionally, the outer for loop also executes \\(n\\) times. As a result, the algorithm performs \\(n \\cdot n\\) comparisons, leading to a time complexity of \\(O(n \\cdot n) = O(n^2)\\). Note that time complexity typically represents the worst-case scenario; in practice, the algorithm may terminate earlier if the array becomes sorted before completing all iterations.\nNote: It would be interesting to see how the real-life performance of the algorithms compare to the time complexities. Hence, in the last-part of this 3-part series I will share an interactive file, for plotting the actual real-life performance of an algorithm against it’s time complexity.\nSelection sort Now that we’ve explored Bubble Sort (and hopefully gained an understanding of how it works), let’s turn our attention to the Selection Sort algorithm. This algorithm identifies the smallest value in an array and moves it to the front.\nUsing the same bookshelf analogy as above, the Selection Sort algorithm can be described as follows (in simple pseudocode):\nStart: Begin at the first book on the unordered shelf (index 0). Assume this book is the thinnest (i.e., has the lowest value). Iterate: Go through the entire bookshelf, one book at a time, searching for a thinner book. If a thinner book is found, update the current thinnest book. Continue until all books on the shelf have been checked. Move to the front: Once the thinnest book in the entire bookshelf is identified, swap it with the book at index 0. The book previously at index 0 moves to the position of the thinnest book. Repeat: Repeat this process, starting at the next book in line, until the entire bookshelf is sorted. This analogy simplifies the Selection Sort process, making it easier to understand how the algorithm works.\nvoid selectionSort(int arr[], int n) { // The outer loop has to go over all n elements in order to compare them // and bring them to the front if they are the minimum value. Since // we start counting at 0, going from 0 to (n - 1) contains the first // n elements. for (int i = 0; i \u003c n; ++i) { // We initialize the 1st element as the index of the minimum: int indexMin = i; // We check all i + 1 indeces after i in order to check if there is // another index with a lower value: for (int j = i + 1; j \u003c n; ++j) if (arr[j] \u003c arr[indexMin]) indexMin = j; // if so we make this the smallest index. // Once we have found the smallest index, we swap the values // using the \"standard\" C swap: int temp = arr[i]; arr[i] = arr[indexMin]; arr[indexMin] = temp; } } When analysing the time complexity of the selection sort algorithm, one first observes that with the inner loop in the function will on average compare approximately \\(\\frac{n}{2}\\) before the lowest value of the iteration is found. This loop to find the lowest value is itself also run \\(n\\) times. Hence we can conclude that we have a time complexity of \\(O(\\frac{n}{2} \\cdot n) = O(n^2)\\).\nInsertion sort Here’s the polished version of your text:\nFinally, let’s take a look at the Insertion Sort algorithm. This algorithm works slightly differently than the two algorithms mentioned earlier. Conceptually, the array is divided into two parts: the first part represents the sorted portion, while the second part consists of the elements that still need to be sorted. (This division is conceptual rather than physical.)\nUsing the bookshelf analogy one last time, the insertion sort algorithm can be described as follows:\nStart: Begin with the first book on the bookshelf (the book at index 0). This book is considered the first element of the “sorted” portion of the array. Next: Move to the second book (at index 1). If this book is larger than the first book, it is already in its correct place within the sorted portion. If it is smaller, move it to index 0, and shift the previous first book to index 1. Now the sorted portion contains the first two books in order. Iterate: Proceed to the third book (at index 2). Determine whether it is already in the correct place within the sorted portion (e.g., the thickest book in the sorted part) or whether it needs to be inserted before one of the earlier books. Continue this process, ensuring that each book is placed in its correct position within the sorted portion before moving on to the next book. This step-by-step approach gradually builds the sorted portion of the array, ensuring all books (or elements) are in their correct positions by the end. Now, for the implementation, we go back to the drawing board (i.e., our C compiler):\nvoid insertionSort(int arr[], int n) { // Implementation-wise: we can start the outer for loop at the second element (i = 1), // and iterate over i until the last element (i = n - 1), since the first element // (index 0) is already considered sorted. for (int i = 1; i \u003c n; ++i) { // Save the current index and value of the element that we want to insert // into its correct position in the sorted part of the array. int insertIndex = i; int insertValue = arr[insertIndex]; // Use this iterator to check where in the sorted portion of the array // the current value belongs. Start with the last element of the sorted part. int j = i - 1; // While the previous element is larger than the current value, shift the // previous element one position to the right. This creates space for the // current value to be inserted into its correct position. while (j \u003e= 0 \u0026\u0026 arr[j] \u003e insertValue) { arr[j + 1] = arr[j]; // Shift the larger element one position to the right. insertIndex = j; // Update the insertion index. j--; // Move to the next element in the sorted part. } // Insert the current value at its correct position in the sorted portion. arr[insertIndex] = insertValue; } } Once again, we are dealing with approximately \\(\\frac{n}{2}\\) comparisons needed to sort each value within the sorted part. Since this sorting process is repeated for every element, we end up with a time complexity of \\(O(\\frac{n}{2} \\cdot n) = O(n^2)\\).\nThis wraps up our exploration of the three algorithms we’ve covered: Bubble Sort, Selection Sort, and Insertion Sort. While it’s unfortunate that I don’t have graphical animations (nor the time to create them) to demonstrate the workings of these algorithms visually, I encourage you to leverage an excellent resource—the internet. There are plenty of videos and .gif files that explain these algorithms in great detail. The code is available on GitHub in this repo.\nI encourage you to dive deeper into these algorithms, experiment by implementing them yourself, and explore if you can make minor adjustments or optimizations. The key aspect of learning Computer Science is understanding the intuition behind algorithms and then experimenting to develop your own variations.\nIn my opinion, true value as a Computer Scientist (which I do not claim to be) lies not just in using standard implementations of sorting algorithms but in having the ability to innovate and create unique variations yourself. This ability to adapt and extend algorithms is what seperates good computer scientists from great ones.\nIn the next two parts of this series, we will be looking at algorithms with (in general) better time complexities than the algorithms presented in this article. I will publish the next two parts within the next two weeks.\nDisclaimer: these are learning notes meant as a work in progress. As I learn more, this and my other docs will be expanded on. This is by no means meant to be an exhaustive overview. I value your feedback, so if you spot any mistakes, or have some other comments, please feel free to contact me.\n",
+  "wordCount" : "2260",
+  "inLanguage": "en",
+  "datePublished": "2024-12-24T14:08:26+01:00",
+  "dateModified": "2024-12-24T14:08:26+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Berke Aslan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://berkeaslan.github.io/posts/dsa-arrays-part-1/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Berke Aslan",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://berkeaslan.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://berkeaslan.github.io/" accesskey="h" title="Berke Aslan (Alt + H)">Berke Aslan</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://berkeaslan.github.io/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://berkeaslan.github.io/posts" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://berkeaslan.github.io/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:contact@berkeaslan.net" title="Contact">
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      DSA: Arrays - Part 1
+    </h1>
+    <div class="post-meta"><span title='2024-12-24 14:08:26 +0100 CET'>December 24, 2024</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Berke Aslan
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-are-arrays" aria-label="What are arrays?">What are arrays?</a></li>
+                <li>
+                    <a href="#bubble-sort" aria-label="Bubble sort">Bubble sort</a></li>
+                <li>
+                    <a href="#selection-sort" aria-label="Selection sort">Selection sort</a></li>
+                <li>
+                    <a href="#insertion-sort" aria-label="Insertion sort">Insertion sort</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don&rsquo;t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the <em>bubble</em>, <em>selection</em>, and <em>insertion</em> sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.</p>
+<h2 id="what-are-arrays">What are arrays?<a hidden class="anchor" aria-hidden="true" href="#what-are-arrays">#</a></h2>
+<p>Arrays are collections of elements that allow access and manipulation through their indices.</p>
+<h2 id="bubble-sort">Bubble sort<a hidden class="anchor" aria-hidden="true" href="#bubble-sort">#</a></h2>
+<p>Bubble sort is perhaps the algorithm that feels most natural to many of us when sorting objects in real life. The Bubble sort algorithm works by sorting an array from the lowest to the highest values. Let’s imagine the following (I reckon, unimaginable) scenario:</p>
+<p>You have a bookshelf with <em>n</em> books stored in random order. Each book has a unique thickness (the value), but they are randomly arranged on the shelf. Now, you’ve decided to sort the books from thinnest to thickest. <strong>How do you do this?</strong></p>
+<p>If you have a bookshelf nearby, you can apply the algorithm yourself in real life. Otherwise, I’ll provide the pseudocode (not the abstract version you often see) along with some illustrations:</p>
+<ol>
+<li><strong>Start:</strong> Begin on the left of the bookshelf, at the position with index 0.</li>
+<li><strong>Swap:</strong> Compare the book at index 0 with the book to its right (index 1). If the book at index 0 is thicker than the one at index 1, swap them so that the thicker book moves to index 1 and the thinner book stays at index 0. Next, compare the book at index 1 with the book at index 2 and perform the same check. Continue this process until you reach the last book at index <em>n – 1</em>. By the end of this pass, the thickest book will have &ldquo;bubbled up&rdquo; to the last position on the shelf. You have now completed one pass through the bookshelf.</li>
+<li><strong>Optimize:</strong> For each subsequent pass, you can skip the last book, as it is already the thickest book from the previous pass.</li>
+<li><strong>Repeat:</strong> Continue repeating the passes until all the books are sorted.</li>
+</ol>
+<p>This method ensures that with each pass, the next thickest book settles into its correct position, gradually sorting the entire collection from thinnest to thickest.</p>
+<p><em>If you want to see the more abstract pseudocode, I invite you to read the pseuodocode that you can find on <a href="https://en.wikipedia.org/wiki/Bubble_sort">Wikipedia</a> or some other website on the internet.</em></p>
+<p>Let&rsquo;s implement this algorithm in C (with some minor performance adjustments). We start by including the right C headers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdbool.h&gt;</span><span style="color:#75715e">
+</span></span></span></code></pre></div><p>Next, we need a problem so that we can sort it. We define the following main in the script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Function to print an array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">printArray</span>(<span style="color:#66d9ef">int</span> array[], <span style="color:#66d9ef">int</span> size) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> size; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d &#34;</span>, array[i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initialize the random array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> randomArray[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">27</span>, <span style="color:#ae81ff">85</span>, <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">42</span>, <span style="color:#ae81ff">68</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">54</span>, <span style="color:#ae81ff">31</span>, <span style="color:#ae81ff">76</span>, <span style="color:#ae81ff">50</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(randomArray) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(randomArray[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Unsorted Array:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printArray</span>(randomArray, size);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Calling the sort function (once we have implemented it),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// uncomment to run:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// bubbleSort(randomArray, size);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// selectionSort(randomArray, size);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// insertionSort(randomArray, size);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Sorted Array in Ascending Order:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printArray</span>(randomArray, size);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Finally, we can implement the algorithm itself in C (with some illustrative comments in the book analogy):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">bubbleSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> n)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// We iterate through each book in the shelf
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// starting at index 0 and moving to index (n - 2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// using the outer for loop. Why (n - 2)? Since we 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// only need to look at the first (n - 1) indeces, and we start
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// counting at 0 to i &lt;= n - 2 (or equivalently: i &lt; n - 1),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// will iterate through the first (n - 1) elements.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">++</span>i)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// We include an indicator. Why do we do this? Simple:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// once no swap occurs anymore (in the next for loop),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// we can be sure that the &#34;lower&#34;-part of the array is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// also sorted, so we don&#39;t need to pass over these parts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// again.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">bool</span> swapped <span style="color:#f92672">=</span> false; <span style="color:#75715e">// Set to false at the beginning of each iter.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// We use this for-loop to iterate and compare the books in the shelf
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// with excluding the last one at each pass, hence:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// j &lt; (n - 1) - i.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> (n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> i; <span style="color:#f92672">++</span>j)
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// If element at index j is higher than the index at
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// element j + 1, we swap them.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&gt;</span> arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>			{
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Standard swap in C (using temp var.):
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">int</span> temp <span style="color:#f92672">=</span> arr[j];
+</span></span><span style="display:flex;"><span>				arr[j] <span style="color:#f92672">=</span> arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>				arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// If swapped, we set the indicator to true.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// If no swap has occured, we can break out of the for loop:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>swapped)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is a simple explanation of the Bubble Sort algorithm. Regarding computational time complexity, the inner <code>for</code> loop runs \(n\) times to perform \(n\) comparisons. Additionally, the outer <code>for</code> loop also executes \(n\) times. As a result, the algorithm performs \(n \cdot n\) comparisons, leading to a time complexity of \(O(n \cdot n) = O(n^2)\). Note that time complexity typically represents the worst-case scenario; in practice, the algorithm may terminate earlier if the array becomes sorted before completing all iterations.</p>
+<p><em>Note: It would be interesting to see how the real-life performance of the algorithms compare to the time complexities. Hence, in the last-part of this 3-part series I will share an interactive file, for plotting the actual real-life performance of an algorithm against it&rsquo;s time complexity.</em></p>
+<h2 id="selection-sort">Selection sort<a hidden class="anchor" aria-hidden="true" href="#selection-sort">#</a></h2>
+<p>Now that we’ve explored Bubble Sort (and hopefully gained an understanding of how it works), let’s turn our attention to the Selection Sort algorithm. This algorithm identifies the smallest value in an array and moves it to the front.</p>
+<p>Using the same bookshelf analogy as above, the Selection Sort algorithm can be described as follows (in simple pseudocode):</p>
+<ol>
+<li><strong>Start:</strong> Begin at the first book on the unordered shelf (index 0). Assume this book is the thinnest (i.e., has the lowest value).</li>
+<li><strong>Iterate:</strong> Go through the entire bookshelf, one book at a time, searching for a thinner book. If a thinner book is found, update the current thinnest book. Continue until all books on the shelf have been checked.</li>
+<li><strong>Move to the front:</strong> Once the thinnest book in the entire bookshelf is identified, swap it with the book at index 0. The book previously at index 0 moves to the position of the thinnest book.</li>
+<li><strong>Repeat:</strong> Repeat this process, starting at the next book in line, until the entire bookshelf is sorted.</li>
+</ol>
+<p>This analogy simplifies the Selection Sort process, making it easier to understand how the algorithm works.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">selectionSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> n)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// The outer loop has to go over all n elements in order to compare them
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// and bring them to the front if they are the minimum value. Since
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// we start counting at 0, going from 0 to (n - 1) contains the first 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// n elements.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; <span style="color:#f92672">++</span>i)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// We initialize the 1st element as the index of the minimum:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">int</span> indexMin <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// We check all i + 1 indeces after i in order to check if there is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// another index with a lower value:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;</span> n; <span style="color:#f92672">++</span>j)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&lt;</span> arr[indexMin])
+</span></span><span style="display:flex;"><span>				indexMin <span style="color:#f92672">=</span> j; <span style="color:#75715e">// if so we make this the smallest index.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Once we have found the smallest index, we swap the values
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// using the &#34;standard&#34; C swap:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">int</span> temp <span style="color:#f92672">=</span> arr[i];
+</span></span><span style="display:flex;"><span>		arr[i] <span style="color:#f92672">=</span> arr[indexMin];
+</span></span><span style="display:flex;"><span>		arr[indexMin] <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When analysing the time complexity of the selection sort algorithm, one first observes that with the inner loop in the function will on average compare approximately \(\frac{n}{2}\) before the lowest value of the iteration is found. This loop to find the lowest value is itself also run \(n\) times. Hence we can conclude that we have a time complexity of \(O(\frac{n}{2} \cdot n) = O(n^2)\).</p>
+<h2 id="insertion-sort">Insertion sort<a hidden class="anchor" aria-hidden="true" href="#insertion-sort">#</a></h2>
+<p>Here’s the polished version of your text:</p>
+<p>Finally, let’s take a look at the Insertion Sort algorithm. This algorithm works slightly differently than the two algorithms mentioned earlier. Conceptually, the array is divided into two parts: the first part represents the sorted portion, while the second part consists of the elements that still need to be sorted. (This division is conceptual rather than physical.)</p>
+<p>Using the bookshelf analogy one last time, the insertion sort algorithm can be described as follows:</p>
+<ol>
+<li><strong>Start:</strong> Begin with the first book on the bookshelf (the book at index 0). This book is considered the first element of the &ldquo;sorted&rdquo; portion of the array.</li>
+<li><strong>Next:</strong> Move to the second book (at index 1). If this book is larger than the first book, it is already in its correct place within the sorted portion. If it is smaller, move it to index 0, and shift the previous first book to index 1. Now the sorted portion contains the first two books in order.</li>
+<li><strong>Iterate:</strong> Proceed to the third book (at index 2). Determine whether it is already in the correct place within the sorted portion (e.g., the thickest book in the sorted part) or whether it needs to be inserted before one of the earlier books. Continue this process, ensuring that each book is placed in its correct position within the sorted portion before moving on to the next book.</li>
+</ol>
+<p>This step-by-step approach gradually builds the sorted portion of the array, ensuring all books (or elements) are in their correct positions by the end. Now, for the implementation, we go back to the drawing board (i.e., our C compiler):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insertionSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> n)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Implementation-wise: we can start the outer for loop at the second element (i = 1),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// and iterate over i until the last element (i = n - 1), since the first element
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// (index 0) is already considered sorted.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> n; <span style="color:#f92672">++</span>i)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save the current index and value of the element that we want to insert
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// into its correct position in the sorted part of the array.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> insertIndex <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> insertValue <span style="color:#f92672">=</span> arr[insertIndex];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use this iterator to check where in the sorted portion of the array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// the current value belongs. Start with the last element of the sorted part.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// While the previous element is larger than the current value, shift the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// previous element one position to the right. This creates space for the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// current value to be inserted into its correct position.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> (j <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> arr[j] <span style="color:#f92672">&gt;</span> insertValue) {
+</span></span><span style="display:flex;"><span>            arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> arr[j]; <span style="color:#75715e">// Shift the larger element one position to the right.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            insertIndex <span style="color:#f92672">=</span> j;     <span style="color:#75715e">// Update the insertion index.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            j<span style="color:#f92672">--</span>;                 <span style="color:#75715e">// Move to the next element in the sorted part.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Insert the current value at its correct position in the sorted portion.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        arr[insertIndex] <span style="color:#f92672">=</span> insertValue;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Once again, we are dealing with approximately \(\frac{n}{2}\) comparisons needed to sort each value within the sorted part. Since this sorting process is repeated for every element, we end up with a time complexity of \(O(\frac{n}{2} \cdot n) = O(n^2)\).</p>
+<p>This wraps up our exploration of the three algorithms we’ve covered: Bubble Sort, Selection Sort, and Insertion Sort. While it’s unfortunate that I don’t have graphical animations (nor the time to create them) to demonstrate the workings of these algorithms visually, I encourage you to leverage an excellent resource—the internet. There are plenty of videos and .gif files that explain these algorithms in great detail. The code is available on GitHub in <a href="https://github.com/berkeaslan/data-structures-and-algorithms">this repo</a>.</p>
+<p>I encourage you to dive deeper into these algorithms, experiment by implementing them yourself, and explore if you can make minor adjustments or optimizations. The key aspect of learning Computer Science is understanding the intuition behind algorithms and then experimenting to develop your own variations.</p>
+<p>In my opinion, true value as a Computer Scientist (which I do not claim to be) lies not just in using standard implementations of sorting algorithms but in having the ability to innovate and create unique variations yourself. This ability to adapt and extend algorithms is what seperates good computer scientists from great ones.</p>
+<p><em>In the next two parts of this series, we will be looking at algorithms with (in general) better time complexities than the algorithms presented in this article. I will publish the next two parts within the next two weeks.</em></p>
+<p><strong>Disclaimer:</strong> these are learning notes meant as a <strong>work in progress</strong>. As I learn more, this and my other docs will be expanded on. This is by no means meant to be an exhaustive overview. I value your feedback, so if you spot any mistakes, or have some other comments, please feel free to <a href="mailto:contact@berkeaslan.net">contact me</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on x"
+            href="https://x.com/intent/tweet/?text=DSA%3a%20Arrays%20-%20Part%201&amp;url=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f&amp;title=DSA%3a%20Arrays%20-%20Part%201&amp;summary=DSA%3a%20Arrays%20-%20Part%201&amp;source=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f&title=DSA%3a%20Arrays%20-%20Part%201">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on whatsapp"
+            href="https://api.whatsapp.com/send?text=DSA%3a%20Arrays%20-%20Part%201%20-%20https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on telegram"
+            href="https://telegram.me/share/url?text=DSA%3a%20Arrays%20-%20Part%201&amp;url=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share DSA: Arrays - Part 1 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=DSA%3a%20Arrays%20-%20Part%201&u=https%3a%2f%2fberkeaslan.github.io%2fposts%2fdsa-arrays-part-1%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://berkeaslan.github.io/">Berke Aslan</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

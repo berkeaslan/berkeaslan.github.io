@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Berke Aslan</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Dec 2024 12:08:23 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 24 Dec 2024 14:08:26 +0100</lastBuildDate>
     <atom:link href="https://berkeaslan.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DSA: Arrays - Part 1</title>
+      <link>https://berkeaslan.github.io/posts/dsa-arrays-part-1/</link>
+      <pubDate>Tue, 24 Dec 2024 14:08:26 +0100</pubDate>
+      <guid>https://berkeaslan.github.io/posts/dsa-arrays-part-1/</guid>
+      <description>&lt;p&gt;Data structures and algorithms (DSA) are of great importance when solving problems. It is, however, a widely known phenomenon that a lot of CS students don&amp;rsquo;t have their DSA knowledge ready to throw against any problem they encounter. In this 3-part DSA series about arrays, we will be exploring various sorting algorithms for arrays. In part 1, we will be exploring the &lt;em&gt;bubble&lt;/em&gt;, &lt;em&gt;selection&lt;/em&gt;, and &lt;em&gt;insertion&lt;/em&gt; sort algorithms. The goal of these notes is to quickly explain how an algorithm works and develop some intuition. The code is written in C, which I believe is a better language for learning DSA since you have fewer abstractions than languages like Python. This leads to a deeper understanding of the algorithms discussed and shows some of the deficiencies that naturally arise in a language like Python.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>My First Post</title>
       <link>https://berkeaslan.github.io/posts/my-first-post/</link>
