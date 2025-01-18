@@ -2,33 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Berke Aslan</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://berkeaslan.github.io/posts/</link>
     <description>Recent content in Posts on Berke Aslan</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Dec 2024 18:49:37 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>I need compute: a curated marketplace for finding used GPUs for AI</title>
-      <link>http://localhost:1313/posts/p2/</link>
-      <pubDate>Sat, 28 Dec 2024 18:49:37 +0100</pubDate>
-      <guid>http://localhost:1313/posts/p2/</guid>
-      <description>&lt;p&gt;By now, you have probably noticed the direction of my last two posts. Acquiring GPUs is challenging—very challenging. New GPUs (for AI) are prohibitively expensive and exceedingly scarce to source. Furthermore, data centers that purchase them in bulk typically use them for only two (or at most three) years before disposing of them, often through recycling. This practice is detrimental to the environment, harmful to open-source projects that rely on computational power to train their models, and extremely disadvantageous for small companies that are essential for driving innovation in the field.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>What happens to high-performance GPUs at the end of their lifecycle in data centers?</title>
-      <link>http://localhost:1313/posts/p1/</link>
-      <pubDate>Fri, 27 Dec 2024 18:19:32 +0100</pubDate>
-      <guid>http://localhost:1313/posts/p1/</guid>
-      <description>&lt;p&gt;On December 17, 2024, NVIDIA announced its new &lt;a href=&#34;https://blogs.nvidia.com/blog/jetson-generative-ai-supercomputer/&#34;&gt;NVIDIA Jetson Orin Nano Super Developer Kit&lt;/a&gt;, a dev kit designed to make AI compute more accessible to developers, students, and hobbyists alike.&lt;/p&gt;
-&lt;figure&gt;
-    &lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/p1-i1.jpg&#34;
-         alt=&#34;Image 1: NVIDIA Jetson Orin Nano Super Developer Kit. Source: NVIDIA.&#34;/&gt; &lt;figcaption&gt;
-            &lt;p&gt;Image 1: NVIDIA Jetson Orin Nano Super Developer Kit. Source: NVIDIA.&lt;/p&gt;
-        &lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;p&gt;I was eager to acquire a unit for use in my master’s thesis. Priced at $249, it’s quite a bargain for dedicated CUDA hardware. However, when I visited the websites of three different resellers, I encountered a problem (actually two): the lead time was 4–6 weeks, and as an impatient individual, I wanted to get my hands on one ASAP. So, I dove into the rabbit hole: what alternative GPU could I find for a similar price (or perhaps slightly more expensive)?&lt;/p&gt;</description>
-    </item>
+    <lastBuildDate></lastBuildDate>
+    <atom:link href="https://berkeaslan.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
